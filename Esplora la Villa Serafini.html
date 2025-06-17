@@ -1,0 +1,170 @@
+<section id="mappa-villa">
+  <h2>Esplora la Villa Serafini</h2>
+  <p>Clicca su una stanza per scoprire cosa si nasconde al suo interno...</p>
+
+  <div class="mappa-villa">
+    <button onclick="mostraIndizio('salone')" aria-label="Scopri il Salone Rosso">🎴 Salone Rosso</button>
+    <button onclick="mostraIndizio('pianoforte')" aria-label="Scopri la Sala del Pianoforte">🎹 Sala del Pianoforte</button>
+    <button onclick="mostraIndizio('biblioteca')" aria-label="Scopri la Biblioteca">📚 Biblioteca</button>
+    <button onclick="mostraIndizio('giardino')" aria-label="Scopri il Giardino">🌳 Giardino</button>
+    <button onclick="mostraIndizio('torretta')" aria-label="Scopri la Torretta">🗼 Torretta</button>
+    <button onclick="mostraIndizio('archivio')" aria-label="Scopri l'Archivio">📁 Archivio</button>
+  </div>
+
+  <div id="output-indizio" class="box-indizio" aria-live="polite"></div>
+
+  <!-- Audio nascosto -->
+  <audio id="melodia" src="melodia_crypta.wav"></audio>
+
+  <style>
+    #mappa-villa h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .mappa-villa {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .mappa-villa button {
+      padding: 1rem;
+      background-color: #5a3e36;
+      color: #fff8f0;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .mappa-villa button:hover,
+    .mappa-villa button.active {
+      background-color: #a4846b;
+      border-color: #d7c2b1;
+      transform: translateY(-2px);
+    }
+
+    .box-indizio {
+      border: 2px dashed #bbb;
+      padding: 1.5rem;
+      border-radius: 10px;
+      background-color: #fffaf7;
+      font-style: italic;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+      transition: background 0.3s;
+    }
+
+    /* Stile input orologio */
+    #orologio-container {
+      margin-top: 1rem;
+      display: none;
+    }
+
+    #timeInput {
+      font-size: 1.2rem;
+      padding: 0.3rem 0.5rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    #checkBtn {
+      margin-left: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+      background-color: #5a3e36;
+      color: #fff8f0;
+      transition: background-color 0.3s ease;
+    }
+
+    #checkBtn:hover {
+      background-color: #a4846b;
+    }
+
+    #message {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      border: 0 !important;
+    }
+  </style>
+
+  <script>
+    function mostraIndizio(stanza) {
+      const indizi = {
+        salone: "Il Salone Rosso è pronto ad accogliere gli ospiti. I camerieri parlano sottovoce di una lettera misteriosa trovata sotto una sedia.",
+        pianoforte: `La Sala del Pianoforte è ufficialmente chiusa per restauro.`,
+        biblioteca: "I volumi antichi della biblioteca raccontano più di quanto sembri. Uno è segnato con un segnalibro dorato: 'Serafini – 1853'.",
+        giardino: "Nel giardino, una statua pare indicare qualcosa. Ma dove punta davvero quel dito scolpito?",
+        torretta: "La torretta è inagibile. La porta è sbarrata. Tuttavia, c’è una finestra socchiusa al primo piano.",
+        archivio: "L’archivio non compare in nessun programma ufficiale. Eppure... è segnato in una piantina del 1901 appesa nel corridoio."
+      };
+
+      const output = document.getElementById("output-indizio");
+      output.innerHTML = indizi[stanza] || "Stanza non trovata.";
+
+      // Highlight selected button
+      document.querySelectorAll('.mappa-villa button').forEach(btn => btn.classList.remove('active'));
+      const currentBtn = [...document.querySelectorAll('.mappa-villa button')]
+        .find(btn => btn.onclick.toString().includes(`'${stanza}'`));
+      if (currentBtn) currentBtn.classList.add('active');
+
+      // Gestione orologio e audio
+      const container = document.getElementById('orologio-container');
+      const message = document.getElementById('message');
+      const audio = document.getElementById('melodia');
+
+      if (stanza === 'pianoforte') {
+        container.style.display = 'block';
+        message.textContent = '';
+        document.getElementById('timeInput').value = '';
+
+        // Rimuovo eventuali event listener precedenti
+        const newCheckBtn = document.getElementById("checkBtn");
+        newCheckBtn.onclick = () => {
+          const timeInput = document.getElementById("timeInput").value;
+          if (timeInput === "23:40") {
+            message.style.color = "green";
+            message.textContent = "Orario corretto! Ascolta la melodia...";
+            audio.play();
+          } else {
+            message.style.color = "red";
+            message.textContent = "Orario errato, riprova.";
+            audio.pause();
+            audio.currentTime = 0;
+          }
+        };
+      } else {
+        container.style.display = 'none';
+        // Ferma audio e pulisci messaggi se cambio stanza
+        audio.pause();
+        audio.currentTime = 0;
+        message.textContent = '';
+      }
+    }
+  </script>
+
+  <!-- Orologio e controllo nascosti inizialmente -->
+  <div id="orologio-container" aria-live="polite" aria-atomic="true">
+    <label for="timeInput" class="visually-hidden">Inserisci orario</label>
+    <input type="time" id="timeInput" aria-label="Inserisci orario" />
+    <button id="checkBtn">Verifica</button>
+    <div id="message" role="alert" aria-live="polite"></div>
+  </div>
+</section>
