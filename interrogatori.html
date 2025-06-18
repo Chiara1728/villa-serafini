@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interrogatori Polizia - Villa Serafini</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #e6f0fa;
+      margin: 0; padding: 0;
+      color: #0b1d4a;
+    }
+    header {
+      background-color: #123178;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 2px;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      border-bottom: 4px solid #1a3fc2;
+    }
+    main {
+      display: flex;
+      min-height: 90vh;
+    }
+    nav {
+      width: 220px;
+      background-color: #d3defe;
+      border-right: 3px solid #1a3fc2;
+      padding: 1rem;
+    }
+    nav h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+      text-align: center;
+      color: #123178;
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+    }
+    nav ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    nav li {
+      margin: 0.7rem 0;
+    }
+    nav button {
+      width: 100%;
+      padding: 0.5rem 0.7rem;
+      font-size: 1rem;
+      border: 2px solid #123178;
+      border-radius: 4px;
+      background: white;
+      color: #123178;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    nav button:hover,
+    nav button.active {
+      background-color: #123178;
+      color: white;
+    }
+    section#content {
+      flex-grow: 1;
+      background: white;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    section#content h2 {
+      margin-top: 0;
+      color: #0b1d4a;
+      border-bottom: 3px solid #1a3fc2;
+      padding-bottom: 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .interrogatorio p {
+      margin: 1rem 0;
+      line-height: 1.4;
+      font-size: 1.1rem;
+    }
+    .domanda {
+      font-weight: 700;
+      color: #1a3fc2;
+    }
+    .risposta {
+      margin-left: 1rem;
+      font-style: italic;
+      color: #0b1d4a;
+    }
+    #switch-view {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: #1a3fc2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 1px;
+      transition: background-color 0.3s ease;
+    }
+    #switch-view:hover {
+      background-color: #123178;
+    }
+    /* Stile dossier investigativo */
+    .dossier blockquote {
+      background: #e1e8ff;
+      border-left: 5px solid #123178;
+      padding: 1rem 1.2rem;
+      font-style: italic;
+      color: #0b1d4a;
+      margin: 1.5rem 0;
+      line-height: 1.3;
+    }
+  </style>
+</head>
+<body>
+
+<header>Interrogatori della Polizia - Villa Serafini</header>
+
+<main>
+  <nav>
+    <h2>Famiglia Serafini</h2>
+    <ul>
+      <li><button id="corrado-btn" class="active">Zio Corrado</button></li>
+      <li><button id="caterina-btn">Caterina</button></li>
+      <li><button id="giorgio-btn">Giorgio</button></li>
+      <li><button id="elena-btn">Elena</button></li>
+      <li><button id="cuoco-btn">Il Cuoco</button></li>
+    </ul>
+    <button id="switch-view">Passa al Dossier Investigativo sulla Villa</button>
+  </nav>
+
+  <section id="content" class="interrogatorio">
+    <h2>Zio Corrado</h2>
+    <p><span class="domanda">Polizia:</span> Dove si trovava la sera della festa in cui Arianna è scomparsa?</p>
+    <p><span class="risposta">Zio Corrado:</span> Ero nel mio studio, cercando di sistemare alcune pratiche di lavoro. Non avevo interesse a farle del male.</p>
+    <p><span class="domanda">Polizia:</span> Ha visto qualcuno avvicinarsi alla stanza di Arianna?</p>
+    <p><span class="risposta">Zio Corrado:</span> No, la villa è grande, non potevo controllare ogni corridoio. Però ho notato che Caterina spariva spesso al primo piano.</p>
+    <p><span class="domanda">Polizia:</span> Come descriverebbe il rapporto con Arianna?</p>
+    <p><span class="risposta">Zio Corrado:</span> Teso. Stavamo litigando sull’eredità, ma questo non significa nulla.</p>
+    <p><span class="domanda">Polizia:</span> Ha mai notato comportamenti strani da parte di qualcuno durante la festa?</p>
+    <p><span class="risposta">Zio Corrado:</span> Giorgio sembrava nervoso più del solito, ma non ho prove.</p>
+  </section>
+</main>
+
+<script>
+  const interrogatori = {
+    corrado: [
+      { q: "Dove si trovava la sera della festa in cui Arianna è scomparsa?", a: "Ero nel mio studio, cercando di sistemare alcune pratiche di lavoro. Non avevo interesse a farle del male." },
+      { q: "Ha visto qualcuno avvicinarsi alla stanza di Arianna?", a: "No, la villa è grande, non potevo controllare ogni corridoio. Però ho notato che Caterina spariva spesso al primo piano." },
+      { q: "Come descriverebbe il rapporto con Arianna?", a: "Teso. Stavamo litigando sull’eredità, ma questo non significa nulla." },
+      { q: "Ha mai notato comportamenti strani da parte di qualcuno durante la festa?", a: "Giorgio sembrava nervoso più del solito, ma non ho prove." }
+    ],
+    caterina: [
+      { q: "Cosa faceva durante la festa?", a: "Ero al primo piano, controllando il telefono e postando qualche storia su Instagram, come sempre." },
+      { q: "Ha notato qualcuno comportarsi in modo sospetto?", a: "A dire il vero no, ma Arianna sembrava nervosa tutta la sera, sembrava temere qualcuno." },
+      { q: "Qual è il vostro rapporto?", a: "Con Arianna? Non era facile, lei non voleva che io sapessi certe cose sulla famiglia." },
+      { q: "Ha mai usato la Torretta per spiare qualcuno?", a: "Mai! È solo un posto carino per guardare il panorama." }
+    ],
+    giorgio: [
+      { q: "Che ruolo aveva durante la festa?", a: "Mi occupavo di far sì che tutto andasse liscio, controllavo che nessuno entrasse nelle stanze vietate." },
+      { q: "Ha sentito o visto qualcosa di strano?", a: "Ho sentito dei rumori provenire dalla Sala del Pianoforte, ma pensavo fosse normale." },
+      { q: "Ha qualche motivo per voler male ad Arianna?", a: "Assolutamente no, ho sempre servito la famiglia con lealtà." },
+      { q: "Ha visto qualcuno spostarsi furtivamente?", a: "Ho visto il Cuoco andare e venire dalla cucina più volte, ma è normale." }
+    ],
+    elena: [
+      { q: "Come conosceva Arianna?", a: "Eravamo amiche d'infanzia, passavamo tanto tempo insieme." },
+      { q: "Ha notato qualcosa di insolito quella sera?", a: "Arianna sembrava preoccupata, diceva che qualcuno la stava osservando." },
+      { q: "Crede che qualcuno volesse farle del male?", a: "Non lo so, ma so che Arianna aveva molti nemici in famiglia." },
+      { q: "Ha mai avuto un litigio con Arianna?", a: "No, eravamo molto legate." }
+    ],
+    cuoco: [
+      { q: "Dove si trovava durante la festa?", a: "In cucina, ovviamente. Ho sentito tutto quello che succedeva in sala da pranzo." },
+      { q: "Ha visto qualcuno entrare o uscire da stanze proibite?", a: "Qualcuno è passato dal giardino alla sala da pranzo, ma non ho visto chi fosse." },
+      { q: "Ci sono stati rumori strani in cucina o vicino?", a: "Sì, qualcuno ha bussato più volte alla porta della cucina, ma non ho aperto." },
+      { q: "Ha qualche segreto da nascondere?", a: "Non più di altri qui dentro." }
+    ]
+  };
+
+  const dossier = {
+    corrado: `Questa villa è un labirinto.<br>Io sto vicino all’Archivio, mi serve silenzio.<br>Ma le scale… sono solo una, e ti portano su in mezzo a tutte le camere.<br>Una casa pensata male, se me lo chiedi.`,
+    caterina: `Io sto al primo piano, proprio sopra la Sala del Pianoforte.<br>Arianna stava alla fine del corridoio, in una stanza tutta per sé.<br>Io dicevo sempre che la Torretta sembrava fatta per spiarla...`,
+    giorgio: `Dal Salone Rosso si vede la Sala Pianoforte… ma solo se le tende non sono tirate.<br>E il camino è allineato col corridoio d’ingresso, come vuole la tradizione.<br>La Biblioteca è vicina all’ingresso, a sinistra appena si entra.`,
+    elena: `Quando venivo da piccola dormivo sopra la Biblioteca.<br>Ogni volta mi svegliavano i tarli nei mobili antichi.<br>Arianna odiava il Salone Rosso… diceva che lì dentro si sentiva sempre osservata.`,
+    cuoco: `Io dalla cucina sento tutto quello che succede in sala da pranzo.<br>E pure gli sciacquoni dei bagni lì accanto.<br>Ma il giardino... quello lo vedi solo passando per la sala da pranzo.`
+  };
+
+  const btnMap = {
+    "corrado-btn": "corrado",
+    "caterina-btn": "caterina",
+    "giorgio-btn": "giorgio",
+    "elena-btn": "elena",
+    "cuoco-btn": "cuoco"
+  };
+
+  const buttons = document.querySelectorAll("nav button");
+  const content = document.getElementById("content");
+  const switchBtn = document.getElementById("switch-view");
+
+  let currentPerson = "corrado";
+  let viewMode = "interrogatorio"; // or 'dossier'
+
+  function renderInterrogatorio(person) {
+    const dialoghi = interrogatori[person];
+    let html = `<h2>${capitalize(person)}</h2>`;
+    dialoghi.forEach(item => {
+      html += `<p><span class="domanda">Polizia:</span> ${item.q}</p>`;
+      html += `<p><span class="risposta">${capitalize(person)}:</span> ${item.a}</p>`;
+    });
+    content.className = "interrogatorio";
+    content.innerHTML = html;
+  }
+
+  function renderDossier(person) {
+    content.className = "dossier";
+    content.innerHTML = `<h2>${capitalize(person)}</h2><blockquote>${dossier[person]}</blockquote>`;
+  }
+
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  buttons.forEach(btn => {
+    if(btn.id !== "switch-view"){
+      btn.addEventListener("click", () => {
+        buttons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentPerson = btnMap[btn.id];
+        if(viewMode === "interrogatorio") {
+          renderInterrogatorio(currentPerson);
+        } else {
+          renderDossier(currentPerson);
+        }
+      });
+    }
+  });
+
+  switchBtn.addEventListener("click", () => {
+    if(viewMode === "interrogatorio") {
+      viewMode = "dossier";
+      switchBtn.textContent = "Torna agli Interrogatori";
+      renderDossier(currentPerson);
+    } else {
+      viewMode = "interrogatorio";
+      switchBtn.textContent = "Passa al Dossier Investigativo sulla Villa";
+      renderInterrogatorio(currentPerson);
+    }
+  });
+
+  // inizializza con il primo personaggio e interrogatorio
+  renderInterrogatorio(currentPerson);
+
+</script>
+
+</body>
+</html>
