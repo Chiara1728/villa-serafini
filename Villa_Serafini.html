@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Villa Serafini</title>
+  <style>
+    body {
+      font-family: 'Lora', serif;
+      background-color: #fefefe;
+      color: #2c2c2c;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    header {
+      position: relative;
+      background: url('https://fai-platform.imgix.net/media/lombardia/va/1644_villa-della-porta-bozzolo.jpg?crop=fit&w=1440&h=800&auto=format,compress') no-repeat center/cover;
+      color: white;
+      padding: 6rem 2rem;
+      text-align: center;
+      background-color: #333;
+      overflow: hidden;
+    }
+
+    /* Overlay scuro trasparente */
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1;
+    }
+
+    header h1, header p {
+      position: relative;
+      z-index: 2;
+      margin: 0;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+    }
+
+    header p {
+      font-size: 1.3rem;
+      margin-top: 0.5rem;
+    }
+
+    nav {
+      background-color: #8c6f56;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #f0e6d2;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 0.5rem;
+    }
+
+    .note {
+      font-style: italic;
+      color: #777;
+    }
+
+    ul {
+      list-style-type: square;
+      padding-left: 1.5rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .gallery-grid img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: #f4f1ec;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Villa Serafini</h1>
+    <p>Dimora storica dal 1853</p>
+  </header>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#eventi">Eventi</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contatti">Contatti</a>
+  </nav>
+
+  <main>
+    <section id="eventi">
+      <h2>Evento Benefico – Sabato 14 ottobre</h2>
+      <p><strong>Programma:</strong></p>
+      <ul>
+        <li>Ore 20:30 – Aperitivo nel Salone Rosso</li>
+        <li>Ore 21:00 – Cena di gala nelle Sale Nobili</li>
+        <li>Ore 22:25 – Visita guidata alle collezioni private</li>
+        <li>Ore 23:40 – Concerto nella Sala del Pianoforte</li>
+      </ul>
+      <p class="note">Nota: alcune aree saranno temporaneamente chiuse per restauro (tra cui la Sala del Pianoforte).</p>
+    </section>
+
+    <section id="gallery">
+      <h2>Galleria Fotografica</h2>
+      <p>Alcuni momenti delle precedenti edizioni.</p>
+      <div class="gallery-grid">
+        <img src="https://www.palazzobrancaccio.net/images/phocagallery/4_cene_di_gala/thumbs/phoca_thumb_l_palazzo_brancaccio_cenedigala_02n.jpg" alt="Evento 1" />
+        <img src="https://cdn0.matrimonio.com/vendor/3040/3_2/960/jpg/cortileonore_2_153040.jpeg" alt="Evento 2" />
+        <img src="https://fai-platform.imgix.net/media/lombardia/va/1644_villa-della-porta-bozzolo.jpg?crop=fit&w=1440&h=800&auto=format,compress" alt="Villa" />
+      </div>
+    </section>
+
+    <section id="contatti">
+      <h2>Contatti</h2>
+      <p><strong>Email segreteria:</strong> <a href="mailto:eventi@villaserafini-evento.it">eventi@villaserafini-evento.it</a></p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Villa Serafini – Tutti i diritti riservati
+  </footer>
+
+</body>
+</html>
