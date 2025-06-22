@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Villa Serafini</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #e6f0fa;
+      margin: 0;
+      padding: 0;
+      color: #0b1d4a;
+    }
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+    #sidebar {
+      width: 250px;
+      background: #d3defe;
+      border-right: 4px solid #123178;
+      padding: 1rem;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+    #main-content {
+      flex-grow: 1;
+      padding: 1rem 2rem;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #123178;
+    }
+    .griglia-piano {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    .sezione {
+      margin-bottom: 2rem;
+    }
+    .cella {
+      border: 2px dashed #123178;
+      border-radius: 6px;
+      height: 80px;
+      background: #e6f0fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .cella.occupied {
+      border-style: solid;
+      background: #d3defe;
+    }
+    .stanza-item {
+      background: white;
+      border: 2px solid #123178;
+      padding: 0.5rem;
+      margin: 0.3rem 0;
+      border-radius: 6px;
+      text-align: center;
+      cursor: grab;
+      font-weight: 600;
+    }
+    .stanza-drag {
+      background: #f9faff;
+      border: 2px solid #1a3fc2;
+      border-radius: 6px;
+      padding: 0.3rem 0.6rem;
+      cursor: grab;
+    }
+    #controlla-btn {
+      margin: 1rem auto;
+      display: block;
+      padding: 0.6rem 1rem;
+      background: #123178;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #link-segreto, #feedback {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+    #link-segreto {
+      display: none;
+      color: #1a3fc2;
+    }
+    #feedback {
+      color: #b30000;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div id="sidebar">
+    <h2>Stanze</h2>
+  </div>
+  <div id="main-content">
+    <h1>Villa Serafini</h1>
+
+    <div class="sezione">
+      <h2>Piano Terra</h2>
+      <div class="griglia-piano" id="griglia-terra"></div>
+    </div>
+
+    <div class="sezione">
+      <h2>Primo Piano</h2>
+      <div class="griglia-piano" id="griglia-primo"></div>
+    </div>
+
+    <button id="controlla-btn">Controlla disposizione</button>
+    <div id="feedback"></div>
+    <div id="link-segreto">
+      🎉 Hai ricostruito correttamente Villa Serafini!<br>
+      <a href="https://chiara1728.github.io/villa-serafini/Esplora_la_Villa_Serafini.html" target="_blank">Vai alla pagina segreta</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const stanze = [
+  "Ingresso", "Biblioteca", "Bagno", "Salone Rosso", "Sala Pianoforte",
+  "Sala da pranzo", "Cucina", "Giardino",
+  "Camera Caterina", "Camera Corrado", "Camera Arianna", "Camera Elena",
+  "Archivio", "Torretta"
+];
+
+const sidebar = document.getElementById("sidebar");
+const grigliaTerra = document.getElementById("griglia-terra");
+const grigliaPrimo = document.getElementById("griglia-primo");
+const bottoneControlla = document.getElementById("controlla-btn");
+const feedback = document.getElementById("feedback");
+const linkSegreto = document.getElementById("link-segreto");
+
+const disposizioniTerra = [
+  "Ingresso", "Biblioteca", "vuoto", "Bagno",
+  "Salone Rosso", "Sala Pianoforte", "Sala da pranzo", "Cucina",
+  "vuoto", "vuoto", "vuoto", "Giardino"
+];
+
+const disposizioniPrimo = [
+  "Camera Caterina", "Camera Elena", "vuoto", "Camera Arianna",
+  "Camera Corrado", "Archivio", "vuoto", "Torretta",
+  "vuoto", "vuoto", "vuoto", "vuoto"
+];
+
+let errori = 0;
+let suggerimentiAttivi = false;
+
+function creaGriglia(griglia, disposizioni) {
+  disposizioni.forEach(nome => {
+    const cella = document.createElement("div");
+    cella.className = "cella";
+    cella.dataset.accettastanza = nome;
+    if (nome !== "vuoto") {
+      cella.addEventListener("dragover", e => e.preventDefault());
+      cella.addEventListener("drop", e => gestisciDrop(e, cella));
+    }
+    griglia.appendChild(cella);
+  });
+}
+
+function creaSidebar() {
+  stanze.forEach(nome => {
+    const el = document.createElement("div");
+    el.className = "stanza-item";
+    el.textContent = nome;
+    el.id = "stanza-" + nome.replace(/\s+/g, "-");
+    el.draggable = true;
+    el.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", nome);
+    });
+    sidebar.appendChild(el);
+  });
+}
+
+function gestisciDrop(e, cella) {
+  const nome = e.dataTransfer.getData("text/plain");
+  const accetta = cella.dataset.accettastanza;
+
+  if (accetta !== nome) {
+    errori++;
+    if (errori >= 3) suggerimentiAttivi = true;
+    alert(`Qui deve andare: "${accetta}". Hai messo: "${nome}"`);
+    return;
+  }
+
+  if (cella.classList.contains("occupied")) {
+    const precedente = cella.querySelector(".stanza-drag");
+    if (precedente) sidebar.appendChild(creaElementoSidebar(precedente.textContent));
+    cella.innerHTML = "";
+  }
+
+  const el = document.getElementById("stanza-" + nome.replace(/\s+/g, "-"));
+  if (el) el.remove();
+
+  const box = document.createElement("div");
+  box.className = "stanza-drag";
+  box.textContent = nome;
+  box.draggable = true;
+  box.addEventListener("dragstart", ev => {
+    sidebar.appendChild(creaElementoSidebar(nome));
+    cella.innerHTML = "";
+    cella.classList.remove("occupied");
+  });
+
+  cella.appendChild(box);
+  cella.classList.add("occupied");
+}
+
+function creaElementoSidebar(nome) {
+  const el = document.createElement("div");
+  el.className = "stanza-item";
+  el.textContent = nome;
+  el.id = "stanza-" + nome.replace(/\s+/g, "-");
+  el.draggable = true;
+  el.addEventListener("dragstart", e => {
+    e.dataTransfer.setData("text/plain", nome);
+  });
+  return el;
+}
+
+bottoneControlla.addEventListener("click", () => {
+  const errate = [];
+  document.querySelectorAll(".cella").forEach(cella => {
+    const accetta = cella.dataset.accettastanza;
+    const contenuto = cella.textContent.trim();
+    if (accetta !== "vuoto" && contenuto !== accetta) {
+      errate.push(accetta);
+    }
+  });
+
+  if (errate.length === 0) {
+    feedback.textContent = "";
+    linkSegreto.style.display = "block";
+  } else if (suggerimentiAttivi) {
+    linkSegreto.style.display = "none";
+    feedback.innerHTML = `Le seguenti stanze non sono corrette:<br>${errate.map(s => "• " + s).join("<br>")}`;
+  } else {
+    feedback.textContent = "Ci sono stanze sbagliate. Continua a provare!";
+    linkSegreto.style.display = "none";
+  }
+});
+
+creaGriglia(grigliaTerra, disposizioniTerra);
+creaGriglia(grigliaPrimo, disposizioniPrimo);
+creaSidebar();
+</script>
+</body>
+</html>
